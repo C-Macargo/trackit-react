@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginScreen from "./pages/LoginScreen"
 import RegisterScreen from "./pages/RegisterScreen"
 
-
 export default function App() {
 
 

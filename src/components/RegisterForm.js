@@ -2,19 +2,23 @@ import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ThreeDots } from  'react-loader-spinner'
 
 function RegisterForm(){
     const [email, setemail] = useState("")
     const [name, setName] = useState("")
     const [picture, setPicture] = useState("")
     const [password, setPassword] = useState("")
-    const navigate = useNavigate();
-    
+    const [disabledstate, setDisabledState] = useState("")
+    const [disabledText, setDisabledText] = useState("flex")
 
-    function RegisterUser(s){
-        
+    const navigate = useNavigate();
+
+    function RegisterUser(e){
+        setDisabledState("disabled")
+        setDisabledText("none")
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+
         const data = {
                 email: email,
                 name: name,
@@ -24,24 +28,28 @@ function RegisterForm(){
 
             const postPrommise = axios.post(URL, data);
 
-            postPrommise.then(response => {
+            postPrommise.then(success => {
                 navigate("/")
-                console.log(response)
+                console.log(success)
             });
 
+            postPrommise.catch(error => {
+                alert(error)
+                console.log(error)
+                setDisabledState("")
+                setDisabledText("flex")
+            });
 
-
-        s.preventDefault()
-        console.log(data)    
-
+        e.preventDefault()
     }
 
 
 
     return (
-        <Form >
+        <Form onSubmit={RegisterUser}>
             <Label htmlFor="email">
                 <Input
+                    disabled = {disabledstate}
                     placeholder="email"
                     id="email"
                     type="email"
@@ -53,6 +61,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="password">
                 <Input
+                    disabled = {disabledstate}
                     placeholder="senha"
                     id="password"
                     type="text"
@@ -64,6 +73,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="name">
                 <Input
+                    disabled = {disabledstate}
                     placeholder="nome"
                     id="name"
                     type="text"
@@ -75,6 +85,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="url">
                 <Input
+                    disabled = {disabledstate}
                     placeholder="foto"
                     id="picture"
                     type="text"
@@ -87,9 +98,12 @@ function RegisterForm(){
                 <SubmitButton
                     type="submit"
                     id="submitbutton"
-                    onClick={RegisterUser}
-                    >
-                        Entrar
+                    display={(disabledstate === "") ? true : false}
+                    >  
+                        <div>
+                        <p>Cadastrar</p>
+                        <ThreeDots visible={disabledstate} color={"#FFFFFF"} ></ThreeDots>
+                        </div>
                 </SubmitButton>
         </Form>
     )
@@ -106,6 +120,7 @@ const Form = styled.form`
     flex-direction:column;
     width: 303px;
     margin:auto;
+    position:relative;
 `
 
 
@@ -128,6 +143,7 @@ const Input = styled.input`
 
 `
 const SubmitButton = styled.button `
+    position:relative;
     margin:auto;
     font-family:inherit;
     font-style: normal;
@@ -135,10 +151,25 @@ const SubmitButton = styled.button `
     font-size: 20.976px;
     line-height: 26px;
     color: #FFFFFF;
-
     border: none;
     background: #52B6FF;
     border-radius: 4.63636px;
     width: 309px;
     height: 45px;
+
+    div{
+    display:flex;
+    position:absolute;
+    width:100%;
+    height:0%;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    }
+
+    p{
+        display: ${props => props.display ? 'flex' : 'none'};
+    }
+
 `
