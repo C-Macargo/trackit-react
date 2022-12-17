@@ -21,6 +21,7 @@ const [password, setPassword] = useState("")
 
         loginPrommise.then(success => {
                 console.log(success)
+                setDisabledState("")
             });
 
             loginPrommise.catch(error => {
@@ -61,12 +62,13 @@ const [password, setPassword] = useState("")
                 </Input>
             </Label>
             <SubmitButton
+                    disabled = {disabledstate}
                     type="submit"
                     id="submitbutton"
                     display={(disabledstate === "") ? true : false}
                     >  
                         <div>
-                        <p>Cadastrar</p>
+                        <p>Entrar</p>
                         <ThreeDots visible={disabledstate} color={"#FFFFFF"} ></ThreeDots>
                         </div>
                 </SubmitButton>

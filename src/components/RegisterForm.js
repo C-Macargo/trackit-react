@@ -93,6 +93,7 @@ function RegisterForm(){
                 </Input>
             </Label>
                 <SubmitButton
+                    disabled = {disabledstate}
                     type="submit"
                     id="submitbutton"
                     display={(disabledstate === "") ? true : false}
