@@ -10,13 +10,11 @@ function RegisterForm(){
     const [picture, setPicture] = useState("")
     const [password, setPassword] = useState("")
     const [disabledstate, setDisabledState] = useState("")
-    const [disabledText, setDisabledText] = useState("flex")
 
     const navigate = useNavigate();
 
     function RegisterUser(e){
         setDisabledState("disabled")
-        setDisabledText("none")
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
 
         const data = {
@@ -37,7 +35,6 @@ function RegisterForm(){
                 alert(error)
                 console.log(error)
                 setDisabledState("")
-                setDisabledText("flex")
             });
 
         e.preventDefault()
