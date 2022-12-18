@@ -1,22 +1,62 @@
+import WeekDays from "../components/WeekDays"
 import styled from "styled-components";
 import { useState } from "react"
-import WeekDays from "../components/WeekDays"
-import DayButton from "../components/DayButton"
-import { ThreeDots } from  'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
+import { useContext } from "react";
+import {UserDataContext} from "../AppContext/UserDataContext"
+import axios from "axios";
+
 
 function Habits() {
+
+    const { userData } = useContext(UserDataContext)
 
     const [habitNumber, setHabitNumber] = useState(0)
     const [plusCLicked, setPluClicked] = useState(false)
     const [disabledstate, setDisabledState] = useState("")
+    const [createNewHabit, setCreateNewHabit] = useState({ days: [], name: "" });
 
+    const PostURL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const token = userData.token
 
+/* CODE OPEN AND CLOSE NEW HABIT WINDOW */
     function HandleClickPlus() {
         setPluClicked(!plusCLicked)
     }
 
+/* CODE TO MARK AND UNMARK DAYS ON NEW HABITS WINDOW */
+    function HandleNewHabbitEvent(day) {
+        if (createNewHabit.days.includes(day)) {
+            setCreateNewHabit({ ...createNewHabit, days: createNewHabit.days.filter((d) => d !== day), });
+        } else {
+            const finalDays = [...createNewHabit.days, day].sort();
+            setCreateNewHabit({ ...createNewHabit, days: finalDays });
+        }
+    };
+
+/* CODE TO CREATE NEW HABIT ON API */
+    function CreateNewHabit(e) {
+        const header = { header: { Authorization: `Bearer ${token}` } };
+        const postPrommise = axios.post(PostURL, createNewHabit, header );
+
+        postPrommise.then(success => {
+            console.log(success)
+            setCreateNewHabit({ days: [], name: "" })
+        });
+
+        postPrommise.catch(error => {
+            alert(error)
+            console.log(error)
+            setDisabledState("")
+        });
+
+        e.preventDefault()
+    }
+
+
     return (
         <HabitContainer>
+
             <NewHabitContainer>
                 <p>Meus hábitos</p>
                 <PlustButton onClick={HandleClickPlus}>
@@ -25,29 +65,44 @@ function Habits() {
             </NewHabitContainer>
 
             {plusCLicked ?
-                (<AddHabitContainer>
-                    <AddHabitInput
-                        placeholder="nome do hábito"
-                    >
-                    </AddHabitInput>
-                    <div>
-                        {WeekDays.map((day, index) => <DayButton key={index}>{day}</DayButton>)}
-                    </div>
+                (
+                    <Form onSubmit={CreateNewHabit}>
+                        <AddHabitContainer>
+                            <Input
+                                placeholder="nome do hábito"
+                                required
+                                onChange={(s) => setCreateNewHabit({ ...createNewHabit, name: s.target.value })}
+                                value={createNewHabit.name}
+                            >
+                            </Input>
+                            <div >
+                                {WeekDays.map((d) => (
+                                    <NewHabitDayButton
+                                        clicked={createNewHabit.days.includes(d.id)}
+                                        type="button"
+                                        key={d.id}
+                                        onClick={() => HandleNewHabbitEvent(d.id)}
+                                    >
+                                        {d.name}
+                                    </NewHabitDayButton>
+                                ))}
+                            </div>
+                            <AddHabitBottomButtonContainer>
 
-                    <AddHabitButtonContainer>
+                                <p onClick={HandleClickPlus}>Cancelar</p>
 
-                        <p onClick={HandleClickPlus}>Cancelar</p>
-
-                        <SaveButton display={(disabledstate === "") ? true : false} >
-
-                        <p>Cadastrar</p>
-
-                        <ThreeDots visible={disabledstate} color={"#FFFFFF"} ></ThreeDots>
-
-                        </SaveButton>
-                    </AddHabitButtonContainer>
-                </AddHabitContainer>)
-                : (<></>)}
+                                <SaveButton
+                                    display={(disabledstate === "") ? true : false}
+                                    type="submit"
+                                    id="submitbutton"
+                                >
+                                    <p>Cadastrar</p>
+                                    <ThreeDots visible={disabledstate} color={"#FFFFFF"} ></ThreeDots>
+                                </SaveButton>
+                            </AddHabitBottomButtonContainer>
+                        </AddHabitContainer>
+                    </Form>)
+                : (<div></div>)}
 
 
 
@@ -64,7 +119,25 @@ function Habits() {
 export default Habits
 
 
+const Form = styled.form`
+`
+const NewHabitDayButton = styled.button`
 
+    width: 30px;
+    height: 30px;
+    border: 1px solid #D5D5D5;
+    border-radius: 5px;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    background-color: ${(props) => (props.clicked ? "#CFCFCF" : "#fff")};
+    margin-left:5px;
+    color: ${(props) => (props.clicked ? "#fff" : "#CFCFCF")};
+    
+
+`
 
 
 const HabitContainer = styled.div`
@@ -136,7 +209,7 @@ const AddHabitContainer = styled.div`
 
 `
 
-const AddHabitInput = styled.input`
+const Input = styled.input`
         margin-top:15px;
         margin-bottom:5px;
         width: 303px;
@@ -151,7 +224,7 @@ const AddHabitInput = styled.input`
             line-height: 25px;
 `
 
-const AddHabitButtonContainer = styled.div`
+const AddHabitBottomButtonContainer = styled.div`
     width:200px;
     display:flex;
     position:absolute;
@@ -170,8 +243,7 @@ const AddHabitButtonContainer = styled.div`
     }
 `
 
-
-const SaveButton = styled.button `
+const SaveButton = styled.button`
     position:relative;
     margin:auto;
     font-family:inherit;
