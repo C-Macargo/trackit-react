@@ -1,12 +1,22 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import {UserDataContext} from "../AppContext/UserDataContext"
+import { Link } from "react-router-dom";
+
+
 
 function Header(){
+
+    const { userData } = useContext(UserDataContext)
 
     return (
 
         <HeaderContainer>
+            <Link to="/">
             <p>Trackit</p>
-            <img src ={""}></img>
+            </Link>
+
+            <img src ={userData.image}></img>
         </HeaderContainer>
         
     )
@@ -31,6 +41,7 @@ const HeaderContainer = styled.header `
     width: 375px;
     height: 70px;
     justify-content:space-between;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     p{
         font-family: 'Playball';
         font-style: normal;
@@ -43,5 +54,6 @@ const HeaderContainer = styled.header `
     width: 51px;
     height: 51px;
     margin-right:18px;
+    border-radius: 98.5px;
     }
 `

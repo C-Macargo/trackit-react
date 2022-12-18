@@ -1,15 +1,23 @@
 import styled from "styled-components";
 import axios from "axios";
-import { useState } from "react";
 import { ThreeDots } from  'react-loader-spinner'
+import { useState, useContext } from "react"
+import { Link, useNavigate } from "react-router-dom"
+
+import {UserDataContext} from "../AppContext/UserDataContext"
 
 
 
 function LoginForm(){
+
 const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
 const [disabledstate, setDisabledState] = useState("")
 const [email, setemail] = useState("")
 const [password, setPassword] = useState("")
+const { setUserData } = useContext(UserDataContext)
+
+
+        const navigate = useNavigate()
 
     function loginUser(e){
         setDisabledState("disabled")
@@ -20,8 +28,10 @@ const [password, setPassword] = useState("")
         const loginPrommise = axios.post(URL, data);
 
         loginPrommise.then(success => {
+                setUserData(success.data)
                 console.log(success)
                 setDisabledState("")
+                navigate("/habitos")
             });
 
             loginPrommise.catch(error => {
