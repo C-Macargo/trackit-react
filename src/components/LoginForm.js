@@ -2,7 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { ThreeDots } from  'react-loader-spinner'
 import { useState, useContext } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import {UserDataContext} from "../AppContext/UserDataContext"
 

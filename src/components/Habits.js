@@ -1,10 +1,11 @@
 import WeekDays from "../components/WeekDays"
 import styled from "styled-components";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ThreeDots } from 'react-loader-spinner'
 import { useContext } from "react";
-import {UserDataContext} from "../AppContext/UserDataContext"
+import { UserDataContext } from "../AppContext/UserDataContext"
 import axios from "axios";
+import { IoTrashOutline } from "react-icons/io5";
 
 
 function Habits() {
@@ -15,16 +16,32 @@ function Habits() {
     const [plusCLicked, setPluClicked] = useState(false)
     const [disabledstate, setDisabledState] = useState("")
     const [createNewHabit, setCreateNewHabit] = useState({ days: [], name: "" });
+    const [allHabits, SetAllHabits] = useState([])
 
-    const PostURL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
+    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const token = userData.token
 
-/* CODE OPEN AND CLOSE NEW HABIT WINDOW */
+
+
+    useEffect(() => {
+        const header = { headers: { Authorization: `Bearer ${token}` } };
+        const getHabits = axios.get(URL, header)
+
+        getHabits.then(response => {
+            SetAllHabits(response.data)
+            setHabitNumber(response.data.length)
+                ;
+        });
+    }, []);
+
+
+
+    /* CODE OPEN AND CLOSE NEW HABIT WINDOW */
     function HandleClickPlus() {
         setPluClicked(!plusCLicked)
     }
 
-/* CODE TO MARK AND UNMARK DAYS ON NEW HABITS WINDOW */
+    /* CODE TO MARK AND UNMARK DAYS ON NEW HABITS WINDOW */
     function HandleNewHabbitEvent(day) {
         if (createNewHabit.days.includes(day)) {
             setCreateNewHabit({ ...createNewHabit, days: createNewHabit.days.filter((d) => d !== day), });
@@ -34,12 +51,16 @@ function Habits() {
         }
     };
 
-/* CODE TO CREATE NEW HABIT ON API */
+    /* CODE TO CREATE NEW HABIT ON API */
     function CreateNewHabit(e) {
-        const header = { header: { Authorization: `Bearer ${token}` } };
-        const postPrommise = axios.post(PostURL, createNewHabit, header );
+        setDisabledState("disabled")
+
+        const header = { headers: { Authorization: `Bearer ${token}` } };
+        const postPrommise = axios.post(URL, createNewHabit, header);
 
         postPrommise.then(success => {
+            setPluClicked(!plusCLicked)
+            setDisabledState("")
             console.log(success)
             setCreateNewHabit({ days: [], name: "" })
         });
@@ -51,6 +72,19 @@ function Habits() {
         });
 
         e.preventDefault()
+    }
+
+    /* CODE TO DELETE HABIT ON API */
+    function DeleteHabit(id) {
+        const header = { headers: { Authorization: `Bearer ${token}` } };
+        const DeletePromisse = axios.delete(`${URL}/${id}`, header);
+        DeletePromisse.then((success) => {
+            console.log(success.data);
+        });
+        DeletePromisse.catch((error) => {
+            alert(error.response.data.message);
+        });
+
     }
 
 
@@ -76,14 +110,14 @@ function Habits() {
                             >
                             </Input>
                             <div >
-                                {WeekDays.map((d) => (
+                                {WeekDays.map((day) => (
                                     <NewHabitDayButton
-                                        clicked={createNewHabit.days.includes(d.id)}
+                                        clicked={createNewHabit.days.includes(day.id)}
                                         type="button"
-                                        key={d.id}
-                                        onClick={() => HandleNewHabbitEvent(d.id)}
+                                        key={day.id}
+                                        onClick={() => HandleNewHabbitEvent(day.id)}
                                     >
-                                        {d.name}
+                                        {day.name}
                                     </NewHabitDayButton>
                                 ))}
                             </div>
@@ -105,10 +139,36 @@ function Habits() {
                 : (<div></div>)}
 
 
+            {habitNumber == 0 ?
+                <NohabitContainer display={!habitNumber == 0 ? habitNumber : undefined}>
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                </NohabitContainer> :
 
-            <NohabitContainer display={!habitNumber == 0 ? habitNumber : undefined}>
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-            </NohabitContainer>
+
+
+                <HabitList>
+
+                    {allHabits.map((habit,) =>
+
+                        <HabitListBox id={habit.id}>
+                            <p>{habit.name}</p>
+                            <div>
+                                {WeekDays.map((d) => (
+                                    <NewHabitDayButton clicked={habit.days.includes(d.id)}>
+                                        {d.name}
+                                    </NewHabitDayButton>
+                                ))}
+                            </div>
+                            <TrashIcon onClick={() => DeleteHabit(habit.id)} />
+
+                        </HabitListBox>
+                    )}
+
+                </HabitList>
+            }
+
+
+
         </HabitContainer>
     )
 
@@ -141,12 +201,14 @@ const NewHabitDayButton = styled.button`
 
 
 const HabitContainer = styled.div`
-    margin-top:80px;
+    margin-top:70px;
     width: 375px;
     display:flex;
     flex-direction:column;
+
 `
 const NewHabitContainer = styled.div`
+    margin-top:10px;
     width: inherit;
     display:flex;
     justify-content:space-between;
@@ -206,6 +268,7 @@ const AddHabitContainer = styled.div`
     margin:auto;
     align-items:center;
     position:relative;
+    background-color:white;
 
 `
 
@@ -274,4 +337,39 @@ const SaveButton = styled.button`
         color:white;
     }
 
+`
+
+
+const HabitList = styled.div`
+    display:flex;
+    flex-direction:column;
+`
+
+const HabitListBox = styled.div`
+    border-radius: 5px;
+    position:relative;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    width: 340px;
+    height: 91px;
+    margin-bottom:10px;
+    background-color:white;
+    p{
+        margin-left:15px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 19.976px;
+        line-height: 25px;
+        color: #666666;
+    }
+`
+
+const TrashIcon = styled(IoTrashOutline)`
+    font-size:20px;
+    position:absolute;
+    right:15px;
+    top:10px;
 `
