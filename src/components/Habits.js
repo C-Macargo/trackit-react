@@ -2,54 +2,58 @@ import styled from "styled-components";
 import { useState } from "react"
 import WeekDays from "../components/WeekDays"
 import DayButton from "../components/DayButton"
+import { ThreeDots } from  'react-loader-spinner'
 
-function Habits (){
+function Habits() {
 
     const [habitNumber, setHabitNumber] = useState(0)
     const [plusCLicked, setPluClicked] = useState(false)
+    const [disabledstate, setDisabledState] = useState("")
 
-    
+
     function HandleClickPlus() {
         setPluClicked(!plusCLicked)
     }
 
-    return(
+    return (
         <HabitContainer>
             <NewHabitContainer>
                 <p>Meus hábitos</p>
                 <PlustButton onClick={HandleClickPlus}>
                     <p>+</p>
-                </PlustButton>                    
+                </PlustButton>
             </NewHabitContainer>
 
-            {plusCLicked? 
-            
-            
-            (<AddHabitContainer> 
-
-                <AddHabitInput
-                    placeholder="nome do hábito"
+            {plusCLicked ?
+                (<AddHabitContainer>
+                    <AddHabitInput
+                        placeholder="nome do hábito"
                     >
-                </AddHabitInput>
-                <div>
-                {WeekDays.map((day, index) => <DayButton key ={index}>{day}</DayButton>)}
-                </div>
+                    </AddHabitInput>
+                    <div>
+                        {WeekDays.map((day, index) => <DayButton key={index}>{day}</DayButton>)}
+                    </div>
 
-                <div>
+                    <AddHabitButtonContainer>
 
-                    <p onClick={HandleClickPlus}>Cancelar</p>
-                    
-                    <button>Salvar</button>
-                </div>
-            </AddHabitContainer>) 
+                        <p onClick={HandleClickPlus}>Cancelar</p>
 
-            : (<></>)}
+                        <SaveButton display={(disabledstate === "") ? true : false} >
+
+                        <p>Cadastrar</p>
+
+                        <ThreeDots visible={disabledstate} color={"#FFFFFF"} ></ThreeDots>
+
+                        </SaveButton>
+                    </AddHabitButtonContainer>
+                </AddHabitContainer>)
+                : (<></>)}
 
 
-        
-        <NohabitContainer display={!habitNumber == 0 ? habitNumber : undefined}>
-            <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
-        </NohabitContainer>
+
+            <NohabitContainer display={!habitNumber == 0 ? habitNumber : undefined}>
+                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+            </NohabitContainer>
         </HabitContainer>
     )
 
@@ -128,6 +132,7 @@ const AddHabitContainer = styled.div`
     border-radius: 5px;
     margin:auto;
     align-items:center;
+    position:relative;
 
 `
 
@@ -144,4 +149,57 @@ const AddHabitInput = styled.input`
             font-weight: 400;
             font-size: 20px;
             line-height: 25px;
+`
+
+const AddHabitButtonContainer = styled.div`
+    width:200px;
+    display:flex;
+    position:absolute;
+    bottom:30px;
+    right:0;
+    justify-content:space-around;
+    align-items:center;
+
+    p{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15.976px;
+        line-height: 20px;
+        color: #52B6FF;
+    }
+`
+
+
+const SaveButton = styled.button `
+    position:relative;
+    margin:auto;
+    font-family:inherit;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.976px;
+    line-height: 26px;
+    color: #FFFFFF;
+    border: none;
+    background: #52B6FF;
+    border-radius: 4.63636px;
+    width: 84px;
+    height: 35px;
+
+    div{
+    display:flex;
+    position:absolute;
+    width:100%;
+    height:0%;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    }
+
+    p{
+        display: ${props => props.display ? 'flex' : 'none'};
+        color:white;
+    }
+
 `
