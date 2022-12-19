@@ -9,7 +9,7 @@ import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen"
 import HabitScreen from "./pages/HabitScreen";
 import HistoryScreen from "./pages/HistoryScreen";
-
+import TodayScreen from "./pages/TodayScreen";
 //contexts
 import { UserDataContext } from "./AppContext/UserDataContext";
 
@@ -29,7 +29,10 @@ export default function App() {
                     <Route path="/" element={<LoginScreen />} />
                     <Route path="/cadastro" element={<RegisterScreen />} />
                     <Route path="/habitos" element={<HabitScreen />} />
+                    <Route path="/habitos" element={<HabitScreen />} />
                     <Route path="/historico" element={<HistoryScreen />} />
+                    <Route path="/hoje" element={<TodayScreen />} />
+
                 </Routes>
             </BrowserRouter>
         </UserDataContext.Provider>

@@ -17,6 +17,7 @@ function Habits() {
     const [disabledstate, setDisabledState] = useState("")
     const [createNewHabit, setCreateNewHabit] = useState({ days: [], name: "" });
     const [allHabits, SetAllHabits] = useState([])
+    const [refresh, setRefresh] = useState(false);
 
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const token = userData.token
@@ -32,7 +33,7 @@ function Habits() {
             setHabitNumber(response.data.length)
                 ;
         });
-    }, []);
+    }, [refresh]);
 
 
 
@@ -54,11 +55,12 @@ function Habits() {
     /* CODE TO CREATE NEW HABIT ON API */
     function CreateNewHabit(e) {
         setDisabledState("disabled")
-
+        setRefresh(true)
         const header = { headers: { Authorization: `Bearer ${token}` } };
         const postPrommise = axios.post(URL, createNewHabit, header);
 
         postPrommise.then(success => {
+            setRefresh(false)
             setPluClicked(!plusCLicked)
             setDisabledState("")
             console.log(success)
@@ -66,6 +68,7 @@ function Habits() {
         });
 
         postPrommise.catch(error => {
+            setRefresh(false)
             alert(error)
             console.log(error)
             setDisabledState("")
@@ -76,10 +79,14 @@ function Habits() {
 
     /* CODE TO DELETE HABIT ON API */
     function DeleteHabit(id) {
+        setRefresh(true)
+
         const header = { headers: { Authorization: `Bearer ${token}` } };
         const DeletePromisse = axios.delete(`${URL}/${id}`, header);
         DeletePromisse.then((success) => {
-            console.log(success.data);
+            console.log(success.data)
+            setRefresh(false)
+            ;
         });
         DeletePromisse.catch((error) => {
             alert(error.response.data.message);
@@ -139,8 +146,8 @@ function Habits() {
                 : (<div></div>)}
 
 
-            {habitNumber == 0 ?
-                <NohabitContainer display={!habitNumber == 0 ? habitNumber : undefined}>
+            {habitNumber === 0 ?
+                <NohabitContainer display={!habitNumber === 0 ? habitNumber : undefined}>
                     <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                 </NohabitContainer> :
 

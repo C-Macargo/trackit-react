@@ -1,20 +1,18 @@
+import Today from "../components/Today"
 import Footer from "../components/Footer"
 import Header from "../components/Header"
 
 
+function TodayScreen (){
 
-
-function HistoryScreen (){
-    
 
 
     return(
 
         <>
         <Header/>
-            
 
-
+        <Today/>
 
         <Footer/>
         </>
@@ -23,4 +21,6 @@ function HistoryScreen (){
 
 }
 
-export default HistoryScreen
+export default TodayScreen
+
+

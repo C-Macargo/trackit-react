@@ -16,6 +16,7 @@ function Footer() {
 
                 
                 <ProgressBarContainer> {/* div to encopass circular progress bar*/} 
+                <Link to="/hoje">
                     <ProgressBar
                         value={33}
                         background
@@ -29,6 +30,8 @@ function Footer() {
                         })}
                     >   
                     </ProgressBar>
+                    </Link>
+
                 </ProgressBarContainer>
 
                 <div>
