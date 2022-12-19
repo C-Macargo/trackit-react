@@ -11,9 +11,7 @@ function TodayScreen (){
 
         <>
         <Header/>
-
         <Today/>
-
         <Footer/>
         </>
     )

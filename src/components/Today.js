@@ -4,62 +4,91 @@ import "dayjs/locale/pt-br";
 import axios from "axios";
 import styled from "styled-components";
 import { useContext } from "react";
-import { UserDataContext } from "../AppContext/UserDataContext"
+import { UserDataContext} from "../AppContext/UserDataContext"
+import {WheelPercentageContext} from "../AppContext/WheelPercentageContext"
 import { useState, useEffect } from "react"
 import { AiFillCheckSquare } from "react-icons/ai";
 
 
-function Today(){
+function Today() {
 
     const { userData } = useContext(UserDataContext)
-    
+    const { setPercentage, percentage } = useContext(WheelPercentageContext)
     const [todayHabits, setTodayHabits] = useState([])
-
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
+    const [refresh, setRefresh] = useState(false);
     const token = userData.token
+
 
 
     const today = dayjs().locale("pt-br").format("dddd, DD/MM");
     console.log(today)
 
     useEffect(() => {
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
         const header = { headers: { Authorization: `Bearer ${token}` } };
         const getTodayHabits = axios.get(URL, header)
 
         getTodayHabits.then(response => {
             setTodayHabits(response.data)
             console.log(todayHabits)
-                
         });
-    }, []);
+    }, [refresh]);
 
-function CheckHabit (id){
+
+    function HandleCheckHabit(id) {
+        setRefresh(true)
+        console.log(id)
+        const CheckURL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+        const header = { headers: { Authorization: `Bearer ${token}` } };
+        const checkHabit = axios.post(CheckURL, {}, header)
+
+        checkHabit.then(response => {
+            console.log(response)
+            setRefresh(false)
+        });
+    }
+
+    function HandleUnCheckHabit(id) {
+        setRefresh(true)
+        const UnCheckURL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+        const header = { headers: { Authorization: `Bearer ${token}` } };
+        const uncheckHabit = axios.post(UnCheckURL, {}, header)
+
+        uncheckHabit.then(response => {
+            console.log(response)
+            setRefresh(false)
+        });
+    }
+
+const checkedhabits = todayHabits.filter((habit) => habit.done).length;
+const concludedPercentage = (checkedhabits / todayHabits.length) * 100;
+setPercentage(concludedPercentage)
     
-
-    
-
-}
-
-
     return (
 
         <TodayContainer>
             <TodayTitle>
                 <h1>{today}</h1>
-                <p>Nenhum hábito concluído ainda</p>
+                {checkedhabits === 0 ? 
+                <p>Nenhum hábito concluído ainda</p> :
+                <h2>{percentage.toFixed(0)}% dos hábitos concluídos</h2>
+            }
             </TodayTitle>
 
-                {todayHabits.map((habit)=>  
-                <TodayHabitContainer>
+            {todayHabits.map((habit) =>
+                <TodayHabitContainer checked={habit.done ? true : undefined} >
                     <div>
                         <h1>{habit.name}</h1>
                         <p>Sequência atual: {habit.currentSequence} dias</p>
-                        <p>Seu recorde: {habit.highestSequence} dias</p>
+                        <p2>Seu recorde: {habit.highestSequence} dias</p2>
                     </div>
-                    <CheckIcon color={"test"} onClick={() => CheckHabit(habit.id)} />
+                    <CheckIcon 
+                    color={"test"} 
+                    checked={habit.done ? true : undefined} 
+                    onClick={() => habit.done ?  HandleUnCheckHabit(habit.id) : HandleCheckHabit(habit.id)} />
                 </TodayHabitContainer >)}
 
-            
+
 
         </TodayContainer>
 
@@ -105,6 +134,14 @@ h1{
         line-height: 22px;
     }
     
+    h2{
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17.976px;
+        line-height: 22px;
+        color: #8FC549;
+    }
 `
 
 const TodayHabitContainer = styled.div`
@@ -135,8 +172,17 @@ const TodayHabitContainer = styled.div`
         font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
-        color: #666666;
+        color:${(props) => (props.checked ? "#8FC549" : "#666666")};
+    }
 
+    p2{
+        margin-left:10px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12.976px;
+        line-height: 16px;
+        color:${(props) => (props.record ? "#8FC549" : "#666666")};
     }
 
 `
@@ -145,5 +191,6 @@ const CheckIcon = styled(AiFillCheckSquare)`
     font-size:70px;
     right:15px;
     top:10px;
-    color:#EBEBEB;;
+    color:${(props) => (props.checked ? "#8FC549" : "#CFCFCF")};
+
 `

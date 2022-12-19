@@ -2,8 +2,14 @@ import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import  {WheelPercentageContext} from "../AppContext/WheelPercentageContext"
 
 function Footer() {
+
+    const { percentage } = useContext(WheelPercentageContext)
+
+
     return (
 
         <>
@@ -18,7 +24,7 @@ function Footer() {
                 <ProgressBarContainer> {/* div to encopass circular progress bar*/} 
                 <Link to="/hoje">
                     <ProgressBar
-                        value={33}
+                        value={percentage}
                         background
                         text={"Hoje"}
                         backgroundPadding={6}
