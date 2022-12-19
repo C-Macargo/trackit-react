@@ -20,6 +20,10 @@ const GlobalStyle = createGlobalStyle`
         font-size: 100%;
         font: inherit;
         vertical-align: baseline;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+
     }
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure, 
@@ -56,6 +60,11 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
     font-family: 'Arvo', serif;
+    }
+
+    a:hover, a:visited, a:link, a:active{
+        text-decoration: none;
+        color:inherit;
     }
 `
 

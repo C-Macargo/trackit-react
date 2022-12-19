@@ -79,7 +79,7 @@ setPercentage(concludedPercentage)
                 <TodayHabitContainer checked={habit.done ? true : undefined} >
                     <div>
                         <h1>{habit.name}</h1>
-                        <p>Sequência atual: {habit.currentSequence} dias</p>
+                        <p>Sequência atual: <strong>{habit.currentSequence} dias </strong></p>
                         <p2>Seu recorde: {habit.highestSequence} dias</p2>
                     </div>
                     <CheckIcon 
@@ -118,26 +118,17 @@ const TodayTitle = styled.div`
 
 h1{
         color: #126BA5;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 22.976px;
         line-height: 29px;
     }
 
     p{
         color: #BABABA;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 17.976px;
         line-height: 22px;
     }
     
     h2{
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 17.976px;
         line-height: 22px;
         color: #8FC549;
@@ -156,9 +147,6 @@ const TodayHabitContainer = styled.div`
 
     h1{
         margin-left:10px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 19.976px;
         line-height: 25px;
         color: #666666;
@@ -167,19 +155,17 @@ const TodayHabitContainer = styled.div`
 
     p{
         margin-left:10px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
+        color:#666666;
+    }
+
+    strong{
         color:${(props) => (props.checked ? "#8FC549" : "#666666")};
     }
 
     p2{
         margin-left:10px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 12.976px;
         line-height: 16px;
         color:${(props) => (props.record ? "#8FC549" : "#666666")};

@@ -45,8 +45,6 @@ const HeaderContainer = styled.header `
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     p{
         font-family: 'Playball';
-        font-style: normal;
-        font-weight: 400;
         font-size: 38.982px;
         line-height: 49px;
         margin-left:18px

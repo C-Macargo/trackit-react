@@ -81,6 +81,7 @@ function Habits() {
     function DeleteHabit(id) {
         setRefresh(true)
 
+
         const header = { headers: { Authorization: `Bearer ${token}` } };
         const DeletePromisse = axios.delete(`${URL}/${id}`, header);
         DeletePromisse.then((success) => {
@@ -194,9 +195,6 @@ const NewHabitDayButton = styled.button`
     height: 30px;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
-    font-family: 'Lexend Deca';
-    font-style: normal;
-    font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
     background-color: ${(props) => (props.clicked ? "#CFCFCF" : "#fff")};
@@ -239,7 +237,6 @@ const PlustButton = styled.button`
     background: #52B6FF;
     border-radius: 4.63636px;
     border: none;
-    font-family: 'Lexend Deca';
     color:white;
     font-size: 26px;
     p{
@@ -257,9 +254,6 @@ const NohabitContainer = styled.div`
     
 
     p{
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 17.976px;
         line-height: 22px;
         color: #666666;
@@ -287,9 +281,6 @@ const Input = styled.input`
         background: #FFFFFF;
         border: 1px solid #D5D5D5;
         border-radius: 5px;
-        font-family: 'Lexend Deca';
-            font-style: normal;
-            font-weight: 400;
             font-size: 20px;
             line-height: 25px;
 `
@@ -304,7 +295,6 @@ const AddHabitBottomButtonContainer = styled.div`
     align-items:center;
 
     p{
-        font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
         font-size: 15.976px;
@@ -316,9 +306,6 @@ const AddHabitBottomButtonContainer = styled.div`
 const SaveButton = styled.button`
     position:relative;
     margin:auto;
-    font-family:inherit;
-    font-style: normal;
-    font-weight: 400;
     font-size: 15.976px;
     line-height: 26px;
     color: #FFFFFF;
@@ -365,9 +352,6 @@ const HabitListBox = styled.div`
     background-color:white;
     p{
         margin-left:15px;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
         font-size: 19.976px;
         line-height: 25px;
         color: #666666;

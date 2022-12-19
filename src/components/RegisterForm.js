@@ -113,7 +113,6 @@ export default RegisterForm
 
 
 const Form = styled.form`
-    font-family: 'Lexend Deca';
     display:flex;
     flex-direction:column;
     width: 303px;
@@ -130,9 +129,6 @@ const Label = styled.label`
 const Input = styled.input`
     width: 303px;
     height: 45px;
-    font-family:inherit;
-    font-style: normal;
-    font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
     margin-bottom:6px;
@@ -143,9 +139,6 @@ const Input = styled.input`
 const SubmitButton = styled.button `
     position:relative;
     margin:auto;
-    font-family:inherit;
-    font-style: normal;
-    font-weight: 400;
     font-size: 20.976px;
     line-height: 26px;
     color: #FFFFFF;
