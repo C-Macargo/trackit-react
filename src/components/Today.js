@@ -4,8 +4,8 @@ import "dayjs/locale/pt-br";
 import axios from "axios";
 import styled from "styled-components";
 import { useContext } from "react";
-import { UserDataContext} from "../AppContext/UserDataContext"
-import {WheelPercentageContext} from "../AppContext/WheelPercentageContext"
+import { UserDataContext } from "../AppContext/UserDataContext"
+import { WheelPercentageContext } from "../AppContext/WheelPercentageContext"
 import { useState, useEffect } from "react"
 import { AiFillCheckSquare } from "react-icons/ai";
 
@@ -17,11 +17,8 @@ function Today() {
     const [todayHabits, setTodayHabits] = useState([])
     const [refresh, setRefresh] = useState(false);
     const token = userData.token
-
-
-
     const today = dayjs().locale("pt-br").format("dddd, DD/MM");
-    console.log(today)
+
 
     useEffect(() => {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today"
@@ -34,7 +31,7 @@ function Today() {
         });
     }, [refresh]);
 
-
+    //* CODE TO CHECK HABITS *//
     function HandleCheckHabit(id) {
         setRefresh(true)
         console.log(id)
@@ -48,6 +45,7 @@ function Today() {
         });
     }
 
+    //* CODE TO UNCHECK HABITS *//
     function HandleUnCheckHabit(id) {
         setRefresh(true)
         const UnCheckURL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
@@ -60,48 +58,39 @@ function Today() {
         });
     }
 
-const checkedhabits = todayHabits.filter((habit) => habit.done).length;
-const concludedPercentage = (checkedhabits / todayHabits.length) * 100;
-setPercentage(concludedPercentage)
-    
+    //* CODE TO CALCULETE PERCENTAGE OF COMPLETED HABITS *//
+    const checkedhabits = todayHabits.filter((habit) => habit.done).length;
+    const concludedPercentage = (checkedhabits / todayHabits.length) * 100;
+    setPercentage(concludedPercentage)
+
     return (
 
         <TodayContainer>
             <TodayTitle>
                 <h1>{today}</h1>
-                {checkedhabits === 0 ? 
-                <p>Nenhum hábito concluído ainda</p> :
-                <h2>{percentage.toFixed(0)}% dos hábitos concluídos</h2>
-            }
+                {checkedhabits === 0 ?
+                    <p>Nenhum hábito concluído ainda</p> :
+                    <h2>{percentage.toFixed(0)}% dos hábitos concluídos</h2>
+                }
             </TodayTitle>
-
             {todayHabits.map((habit) =>
-                <TodayHabitContainer checked={habit.done ? true : undefined} >
+                <TodayHabitContainer 
+                checked={habit.done ? true : undefined} 
+                highsequencecolor = {habit.currentSequence === habit.highestSequence && habit.done ? true : false}
+                >
                     <div>
                         <h1>{habit.name}</h1>
                         <p>Sequência atual: <strong>{habit.currentSequence} dias </strong></p>
-                        <p2>Seu recorde: {habit.highestSequence} dias</p2>
+                        <p>Seu recorde: <strong2>{habit.highestSequence} dias</strong2></p>
                     </div>
-                    <CheckIcon 
-                    color={"test"} 
-                    checked={habit.done ? true : undefined} 
-                    onClick={() => habit.done ?  HandleUnCheckHabit(habit.id) : HandleCheckHabit(habit.id)} />
+                    <CheckIcon
+                        checked={habit.done ? true : undefined}
+                        onClick={() => habit.done ? HandleUnCheckHabit(habit.id) : HandleCheckHabit(habit.id)} />
                 </TodayHabitContainer >)}
-
-
-
         </TodayContainer>
-
-
-
-
     )
-
 }
-
-
 export default Today
-
 
 const TodayContainer = styled.div`
     width:310px;
@@ -110,12 +99,9 @@ const TodayContainer = styled.div`
     left: 0;
     right: 0;
 
-
 `
-
 const TodayTitle = styled.div`
     margin-bottom:15px;
-
 h1{
         color: #126BA5;
         font-size: 22.976px;
@@ -134,7 +120,6 @@ h1{
         color: #8FC549;
     }
 `
-
 const TodayHabitContainer = styled.div`
     display:flex;
     position:relative;
@@ -163,12 +148,8 @@ const TodayHabitContainer = styled.div`
     strong{
         color:${(props) => (props.checked ? "#8FC549" : "#666666")};
     }
-
-    p2{
-        margin-left:10px;
-        font-size: 12.976px;
-        line-height: 16px;
-        color:${(props) => (props.record ? "#8FC549" : "#666666")};
+    strong2{
+        color:${(props) => (props.highsequencecolor ? "#8FC549" : "#666666")};
     }
 
 `

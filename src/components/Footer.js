@@ -48,13 +48,9 @@ function Footer() {
             </FooterContainer>
         </>
     )
-
-
 }
 
-
 export default Footer
-
 
 const FooterContainer = styled.footer`
     position:fixed;
@@ -69,8 +65,6 @@ const FooterContainer = styled.footer`
     width: 375px;
     height: 70px;
     justify-content:space-around;
-
-
     p{
     font-size: 17.976px;
     line-height: 22px;

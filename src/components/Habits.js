@@ -6,23 +6,21 @@ import { useContext } from "react";
 import { UserDataContext } from "../AppContext/UserDataContext"
 import axios from "axios";
 import { IoTrashOutline } from "react-icons/io5";
+import { confirmAlert } from 'react-confirm-alert'; 
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 
 function Habits() {
 
     const { userData } = useContext(UserDataContext)
-
     const [habitNumber, setHabitNumber] = useState(0)
     const [plusCLicked, setPluClicked] = useState(false)
     const [disabledstate, setDisabledState] = useState("")
     const [createNewHabit, setCreateNewHabit] = useState({ days: [], name: "" });
     const [allHabits, SetAllHabits] = useState([])
     const [refresh, setRefresh] = useState(false);
-
     const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
     const token = userData.token
-
-
 
     useEffect(() => {
         const header = { headers: { Authorization: `Bearer ${token}` } };
@@ -34,8 +32,6 @@ function Habits() {
                 ;
         });
     }, [refresh]);
-
-
 
     /* CODE OPEN AND CLOSE NEW HABIT WINDOW */
     function HandleClickPlus() {
@@ -73,32 +69,43 @@ function Habits() {
             console.log(error)
             setDisabledState("")
         });
-
         e.preventDefault()
     }
 
     /* CODE TO DELETE HABIT ON API */
+
+
     function DeleteHabit(id) {
+
         setRefresh(true)
 
-
-        const header = { headers: { Authorization: `Bearer ${token}` } };
-        const DeletePromisse = axios.delete(`${URL}/${id}`, header);
-        DeletePromisse.then((success) => {
-            console.log(success.data)
-            setRefresh(false)
-            ;
+        confirmAlert({
+            title: 'Confirme para excluir o hábito',
+            message: 'Você quer excluir este hábito?.',
+            buttons: [
+                {
+                    label: 'Sim',
+                    onClick: () =>{   
+                    const header = { headers: { Authorization: `Bearer ${token}` } };
+                    const DeletePromisse = axios.delete(`${URL}/${id}`, header);
+                    DeletePromisse.then((success) => {
+                        console.log(success.data)
+                        setRefresh(false)
+                            ;
+                    });
+                    DeletePromisse.catch((error) => {
+                        alert(error.response.data.message);
+                    });
+                }},
+                {
+                    label: 'Não',
+                }
+            ]
         });
-        DeletePromisse.catch((error) => {
-            alert(error.response.data.message);
-        });
-
     }
-
 
     return (
         <HabitContainer>
-
             <NewHabitContainer>
                 <p>Meus hábitos</p>
                 <PlustButton onClick={HandleClickPlus}>
@@ -130,9 +137,7 @@ function Habits() {
                                 ))}
                             </div>
                             <AddHabitBottomButtonContainer>
-
                                 <p onClick={HandleClickPlus}>Cancelar</p>
-
                                 <SaveButton
                                     display={(disabledstate === "") ? true : false}
                                     type="submit"
@@ -146,18 +151,12 @@ function Habits() {
                     </Form>)
                 : (<div></div>)}
 
-
             {habitNumber === 0 ?
                 <NohabitContainer display={!habitNumber === 0 ? habitNumber : undefined}>
                     <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
                 </NohabitContainer> :
-
-
-
                 <HabitList>
-
                     {allHabits.map((habit,) =>
-
                         <HabitListBox id={habit.id}>
                             <p>{habit.name}</p>
                             <div>
@@ -168,29 +167,19 @@ function Habits() {
                                 ))}
                             </div>
                             <TrashIcon onClick={() => DeleteHabit(habit.id)} />
-
                         </HabitListBox>
                     )}
-
                 </HabitList>
             }
-
-
-
         </HabitContainer>
     )
-
-
 }
-
-
 export default Habits
 
 
 const Form = styled.form`
 `
 const NewHabitDayButton = styled.button`
-
     width: 30px;
     height: 30px;
     border: 1px solid #D5D5D5;
@@ -200,17 +189,12 @@ const NewHabitDayButton = styled.button`
     background-color: ${(props) => (props.clicked ? "#CFCFCF" : "#fff")};
     margin-left:5px;
     color: ${(props) => (props.clicked ? "#fff" : "#CFCFCF")};
-    
-
 `
-
-
 const HabitContainer = styled.div`
     margin-top:70px;
     width: 375px;
     display:flex;
     flex-direction:column;
-
 `
 const NewHabitContainer = styled.div`
     margin-top:10px;
@@ -244,8 +228,6 @@ const PlustButton = styled.button`
         color:white;
     }
 `
-
-
 const NohabitContainer = styled.div`
     margin:auto;
     width:335px;
@@ -259,7 +241,6 @@ const NohabitContainer = styled.div`
         color: #666666;
     }
 `
-
 const AddHabitContainer = styled.div`
     display:flex;
     flex-direction:column;
@@ -270,9 +251,8 @@ const AddHabitContainer = styled.div`
     align-items:center;
     position:relative;
     background-color:white;
-
+    margin-bottom:20px;
 `
-
 const Input = styled.input`
         margin-top:15px;
         margin-bottom:5px;
@@ -284,7 +264,6 @@ const Input = styled.input`
             font-size: 20px;
             line-height: 25px;
 `
-
 const AddHabitBottomButtonContainer = styled.div`
     width:200px;
     display:flex;
@@ -302,7 +281,6 @@ const AddHabitBottomButtonContainer = styled.div`
         color: #52B6FF;
     }
 `
-
 const SaveButton = styled.button`
     position:relative;
     margin:auto;
@@ -332,13 +310,10 @@ const SaveButton = styled.button`
     }
 
 `
-
-
 const HabitList = styled.div`
     display:flex;
     flex-direction:column;
 `
-
 const HabitListBox = styled.div`
     border-radius: 5px;
     position:relative;
@@ -357,7 +332,6 @@ const HabitListBox = styled.div`
         color: #666666;
     }
 `
-
 const TrashIcon = styled(IoTrashOutline)`
     font-size:20px;
     position:absolute;

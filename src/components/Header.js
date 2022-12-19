@@ -3,8 +3,6 @@ import { useContext } from "react";
 import {UserDataContext} from "../AppContext/UserDataContext"
 import { Link } from "react-router-dom";
 
-
-
 function Header(){
 
     const { userData } = useContext(UserDataContext)
@@ -15,20 +13,15 @@ function Header(){
             <Link to="/">
             <p>Trackit</p>
             </Link>
-
             <img src ={userData.image}></img>
         </HeaderContainer>
         
     )
-
-
 }
-
 
 export default Header
 
 const HeaderContainer = styled.header `
-    
     position:fixed;
     z-index: 1;
     top: 0;
@@ -47,7 +40,8 @@ const HeaderContainer = styled.header `
         font-family: 'Playball';
         font-size: 38.982px;
         line-height: 49px;
-        margin-left:18px
+        margin-left:18px;
+        color:white;
     }
     img{
     width: 51px;

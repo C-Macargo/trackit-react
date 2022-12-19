@@ -3,10 +3,7 @@ import axios from "axios";
 import { ThreeDots } from  'react-loader-spinner'
 import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom"
-
 import {UserDataContext} from "../AppContext/UserDataContext"
-
-
 
 function LoginForm(){
 
@@ -15,9 +12,7 @@ const [disabledstate, setDisabledState] = useState("")
 const [email, setemail] = useState("")
 const [password, setPassword] = useState("")
 const { setUserData } = useContext(UserDataContext)
-
-
-        const navigate = useNavigate()
+const navigate = useNavigate()
 
     function loginUser(e){
         setDisabledState("disabled")
@@ -26,21 +21,17 @@ const { setUserData } = useContext(UserDataContext)
             password: password
         }
         const loginPrommise = axios.post(URL, data);
-
         loginPrommise.then(success => {
                 setUserData(success.data)
                 console.log(success)
                 setDisabledState("")
                 navigate("/hoje")
             });
-
             loginPrommise.catch(error => {
                 alert(error)
                 console.log(error)
                 setDisabledState("")
             });
-
-
         e.preventDefault()
     }
 
@@ -85,9 +76,6 @@ const { setUserData } = useContext(UserDataContext)
         </Form>
     )
 }
-
-
-
 export default LoginForm
 
 const Form = styled.form`
@@ -97,13 +85,10 @@ const Form = styled.form`
     margin:auto;
     position:relative;
 `
-
-
 const Label = styled.label`
     display: flex;
     flex-direction: column;
 `
-
 const Input = styled.input`
     width: 303px;
     height: 45px;
