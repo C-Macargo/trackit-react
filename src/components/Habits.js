@@ -80,8 +80,7 @@ function Habits() {
         setRefresh(true)
 
         confirmAlert({
-            title: 'Confirme para excluir o hábito',
-            message: 'Você quer excluir este hábito?.',
+            title: 'Tem certeza que deseja deletar esse hábito?',
             buttons: [
                 {
                     label: 'Sim',
@@ -189,9 +188,9 @@ const NewHabitDayButton = styled.button`
     border-radius: 5px;
     font-size: 19.976px;
     line-height: 25px;
-    background-color: ${(props) => (props.clicked ? "#CFCFCF" : "#fff")};
+    background-color: ${(props) => (props.clicked ? "#cfcfcf" : "#ffffff")};
     margin-left:5px;
-    color: ${(props) => (props.clicked ? "#fff" : "#CFCFCF")};
+    color: ${(props) => (props.clicked ? "#ffffff" : "#dbdbdb")};
 `
 const HabitContainer = styled.div`
     margin-top:70px;
