@@ -27,7 +27,6 @@ export default function App() {
                         <Route path="/" element={<LoginScreen />} />
                         <Route path="/cadastro" element={<RegisterScreen />} />
                         <Route path="/habitos" element={<HabitScreen />} />
-                        <Route path="/habitos" element={<HabitScreen />} />
                         <Route path="/historico" element={<HistoryScreen />} />
                         <Route path="/hoje" element={<TodayScreen />} />
                     </Routes>

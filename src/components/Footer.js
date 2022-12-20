@@ -15,14 +15,14 @@ function Footer() {
         <>
             <FooterContainer data-test="menu">
                 <div>
-                    <Link  data-test="habit-link" to="/habitos">
+                    <Link to="/habitos" data-test="habit-link">
                     <p>Hábitos</p>
                     </Link>
                 </div>
 
                 
-                <ProgressBarContainer data-test="today-link" > {/* div to encopass circular progress bar*/} 
-                <Link to="/hoje">
+                <ProgressBarContainer  > {/* div to encopass circular progress bar*/} 
+                <Link data-test="today-link" to="/hoje">
                     <ProgressBar
                         value={percentage}
                         background
@@ -41,7 +41,7 @@ function Footer() {
                 </ProgressBarContainer>
 
                 <div>
-                    <Link data-test="history-link" to="/historico">
+                    <Link to="/historico" data-test="history-link" >
                     <p>Histórico</p>
                     </Link>
                 </div>
