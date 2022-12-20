@@ -67,23 +67,25 @@ function Today() {
 
         <TodayContainer>
             <TodayTitle>
-                <h1>{today}</h1>
+                <h1 data-test="today" >{today}</h1>
                 {checkedhabits === 0 ?
-                    <p>Nenhum hábito concluído ainda</p> :
-                    <h2>{percentage.toFixed(0)}% dos hábitos concluídos</h2>
+                    <p data-test="today-counter" >Nenhum hábito concluído ainda</p> :
+                    <h2 data-test="today-counter" >{percentage.toFixed(0)}% dos hábitos concluídos</h2>
                 }
             </TodayTitle>
             {todayHabits.map((habit) =>
                 <TodayHabitContainer 
+                data-test="today-habit-container"
                 checked={habit.done ? true : undefined} 
                 highsequencecolor = {habit.currentSequence === habit.highestSequence && habit.done ? true : false}
                 >
                     <div>
-                        <h1>{habit.name}</h1>
-                        <p>Sequência atual: <strong>{habit.currentSequence} dias </strong></p>
-                        <p>Seu recorde: <strong2>{habit.highestSequence} dias</strong2></p>
+                        <h1 data-test="today-habit-name">{habit.name}</h1>
+                        <p data-test="today-habit-sequence" >Sequência atual: <strong>{habit.currentSequence} dias </strong></p>
+                        <p data-test="today-habit-record" >Seu recorde: <strong2>{habit.highestSequence} dias</strong2></p>
                     </div>
                     <CheckIcon
+                        data-test="today-habit-check-btn"
                         checked={habit.done ? true : undefined}
                         onClick={() => habit.done ? HandleUnCheckHabit(habit.id) : HandleCheckHabit(habit.id)} />
                 </TodayHabitContainer >)}

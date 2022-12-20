@@ -9,7 +9,7 @@ function Header(){
 
     return (
 
-        <HeaderContainer>
+        <HeaderContainer data-test="header" >
             <Link to="/">
             <p>Trackit</p>
             </Link>

@@ -108,7 +108,7 @@ function Habits() {
         <HabitContainer>
             <NewHabitContainer>
                 <p>Meus hábitos</p>
-                <PlustButton onClick={HandleClickPlus}>
+                <PlustButton data-test="habit-create-btn" onClick={HandleClickPlus}>
                     <p>+</p>
                 </PlustButton>
             </NewHabitContainer>
@@ -116,8 +116,9 @@ function Habits() {
             {plusCLicked ?
                 (
                     <Form onSubmit={CreateNewHabit}>
-                        <AddHabitContainer>
+                        <AddHabitContainer data-test="habit-create-container">
                             <Input
+                                data-test="habit-name-input"
                                 placeholder="nome do hábito"
                                 required
                                 onChange={(s) => setCreateNewHabit({ ...createNewHabit, name: s.target.value })}
@@ -127,6 +128,7 @@ function Habits() {
                             <div >
                                 {WeekDays.map((day) => (
                                     <NewHabitDayButton
+                                        data-test="habit-day"
                                         clicked={createNewHabit.days.includes(day.id)}
                                         type="button"
                                         key={day.id}
@@ -137,8 +139,9 @@ function Habits() {
                                 ))}
                             </div>
                             <AddHabitBottomButtonContainer>
-                                <p onClick={HandleClickPlus}>Cancelar</p>
+                                <p data-test="habit-create-cancel-btn" onClick={HandleClickPlus}>Cancelar</p>
                                 <SaveButton
+                                    data-test="habit-create-save-btn"
                                     display={(disabledstate === "") ? true : false}
                                     type="submit"
                                     id="submitbutton"
@@ -157,16 +160,16 @@ function Habits() {
                 </NohabitContainer> :
                 <HabitList>
                     {allHabits.map((habit,) =>
-                        <HabitListBox id={habit.id}>
-                            <p>{habit.name}</p>
+                        <HabitListBox data-test="habit-container" id={habit.id}>
+                            <p data-test="habit-name" >{habit.name}</p>
                             <div>
                                 {WeekDays.map((d) => (
-                                    <NewHabitDayButton clicked={habit.days.includes(d.id)}>
+                                    <NewHabitDayButton  data-test="habit-day" clicked={habit.days.includes(d.id)}>
                                         {d.name}
                                     </NewHabitDayButton>
                                 ))}
                             </div>
-                            <TrashIcon onClick={() => DeleteHabit(habit.id)} />
+                            <TrashIcon data-test="habit-delete-btn" onClick={() => DeleteHabit(habit.id)} />
                         </HabitListBox>
                     )}
                 </HabitList>

@@ -13,7 +13,7 @@ function LoginScreen(){
     <LoginForm>
     </LoginForm>
     <StyledLink>
-        <Link to="/cadastro">
+        <Link  data-test="signup-link"  to="/cadastro">
             Não tem uma conta? Cadastre-se!
         </Link> 
     </StyledLink>

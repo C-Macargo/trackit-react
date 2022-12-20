@@ -23,29 +23,24 @@ function RegisterForm(){
                 image: picture,
                 password: password
             };
-
             const postPrommise = axios.post(URL, data);
-
             postPrommise.then(success => {
                 navigate("/")
                 console.log(success)
             });
-
             postPrommise.catch(error => {
                 alert(error)
                 console.log(error)
                 setDisabledState("")
             });
-
         e.preventDefault()
     }
-
-
 
     return (
         <Form onSubmit={RegisterUser}>
             <Label htmlFor="email">
                 <Input
+                    data-test="email-input"
                     disabled = {disabledstate}
                     placeholder="email"
                     id="email"
@@ -58,6 +53,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="password">
                 <Input
+                    data-test="password-input"
                     disabled = {disabledstate}
                     placeholder="senha"
                     id="password"
@@ -70,6 +66,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="name">
                 <Input
+                    data-test="user-name-input"
                     disabled = {disabledstate}
                     placeholder="nome"
                     id="name"
@@ -82,6 +79,7 @@ function RegisterForm(){
             </Label>
             <Label htmlFor="url">
                 <Input
+                    data-test="user-image-input"
                     disabled = {disabledstate}
                     placeholder="foto"
                     id="picture"
@@ -93,6 +91,7 @@ function RegisterForm(){
                 </Input>
             </Label>
                 <SubmitButton
+                    data-test="signup-btn"
                     disabled = {disabledstate}
                     type="submit"
                     id="submitbutton"
@@ -106,11 +105,7 @@ function RegisterForm(){
         </Form>
     )
 }
-
-
-
 export default RegisterForm
-
 
 const Form = styled.form`
     display:flex;
@@ -119,13 +114,10 @@ const Form = styled.form`
     margin:auto;
     position:relative;
 `
-
-
 const Label = styled.label`
     display: flex;
     flex-direction: column;
 `
-
 const Input = styled.input`
     width: 303px;
     height: 45px;
@@ -134,7 +126,6 @@ const Input = styled.input`
     margin-bottom:6px;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
-
 `
 const SubmitButton = styled.button `
     position:relative;

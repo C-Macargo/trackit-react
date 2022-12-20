@@ -40,6 +40,7 @@ const navigate = useNavigate()
         <Form onSubmit={loginUser}>
             <Label htmlFor="email">
                 <Input
+                    data-test="email-input"
                     disabled = {disabledstate}
                     placeholder="email"
                     id="email"
@@ -52,6 +53,7 @@ const navigate = useNavigate()
             </Label>
             <Label htmlFor="password">
                 <Input
+                    data-test="password-input"
                     disabled = {disabledstate}
                     placeholder="senha"
                     id="password"
@@ -63,6 +65,7 @@ const navigate = useNavigate()
                 </Input>
             </Label>
             <SubmitButton
+                    data-test="login-btn"
                     disabled = {disabledstate}
                     type="submit"
                     id="submitbutton"

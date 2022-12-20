@@ -11,7 +11,7 @@ function RegisterScreen(){
         <RegisterForm>
         </RegisterForm>
         <StyledLink>
-            <Link to="/">
+            <Link data-test="login-link" to="/">
                 Já tem uma conta? Faça login!
             </Link> 
         </StyledLink>
