@@ -119,7 +119,6 @@ function Habits() {
                             <Input
                                 data-test="habit-name-input"
                                 placeholder="nome do hábito"
-                                required
                                 onChange={(s) => setCreateNewHabit({ ...createNewHabit, name: s.target.value })}
                                 value={createNewHabit.name}
                             >
